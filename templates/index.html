@@ -1,15 +1,23 @@
 {% extends "base.html" %}
+
+{# a block #}
+
 {% block content %}
 
 <h1>Hello World!</h1>
 
 <p>This is my first webpage</p>
 
+{# 2 expresions #}
+
 <p>My name is {{ first_name }}</p>
 
 <p>{{ stuff }}</p>
 
 <h3>Favorite Pizza:</h3>
+
+
+{# a jinja loop with conditional inside #}
 
 {% for pizza in favorite_pizza %}
 
