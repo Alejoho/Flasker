@@ -4,15 +4,16 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from my_secrets import My_Secrets
 
 
 app = Flask(__name__)
 # app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "mysql+pymysql://root:1234567890@localhost/our_users"
+    f"mysql+pymysql://{My_Secrets.user_name}:{My_Secrets.password}@localhost/{My_Secrets.db_name}"
 )
-app.config["SECRET_KEY"] = "my super secret key that no one is supposed to know"
+app.config["SECRET_KEY"] = My_Secrets.key
 
 db = SQLAlchemy(app)
 
