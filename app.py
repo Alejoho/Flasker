@@ -1,10 +1,11 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from my_secrets import My_Secrets
+from pymysql import err
 
 
 app = Flask(__name__)
@@ -61,21 +62,29 @@ def update(id):
 @app.route("/user/add", methods=["GET", "POST"])
 def add_user():
     my_name = None
+    our_users = []
     form = UserForm()
 
     if form.validate_on_submit():
-        user = Users.query.filter_by(email=form.email.data).first()
-        if user is None:
-            user = Users(name=form.name.data, email=form.email.data)
-            db.session.add(user)
+
+        user = Users(name=form.name.data, email=form.email.data)
+        db.session.add(user)
+        try:
             db.session.commit()
+        except err.IntegrityError as er:
+            print(er)
+            flash("Integrity Error!")
+        except Exception as er:
+            print(er)
+            flash("Integrity Error!", "error")
+            # return redirect("/")
+        else:
+            my_name = form.name.data
+            form.name.data = ""
+            form.email.data = ""
+            flash("User added succesfully!")
+            our_users = Users.query.order_by(Users.date_added)
 
-        my_name = form.name.data
-        form.name.data = ""
-        form.email.data = ""
-        flash("User added succesfully!")
-
-    our_users = Users.query.order_by(Users.date_added)
     return render_template(
         "add_user.html", form=form, name=my_name, our_users=our_users
     )
