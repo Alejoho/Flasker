@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{# flash message #}
+
+<br>
+{% for message in get_flashed_messages() %}
+
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    message
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+{% endfor %}
+
+
+{% if name %}
+
+{# renders the page after the post of the form #}
+
+<h1>User added!!</h1>
+
+<br>
+<br><br>
+
+
+<script src="{{ url_for('static', filename='js/myfile.js')}}"></script>
+
+{% else %}
+
+{# renders the form #}
+
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+
+    <h1>What's Your Name?</h1>
+    <br>
+    <form method="post">
+        {{ form.hidden_tag() }}
+
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control") }}
+        <br>
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control") }}
+        <br>
+        {{ form.submit(class="btn btn-secondary")}}
+    </form>
+</div>
+<br><br>
+
+{% endif %}
+<table class="table table-hover table-bordered table-striped">
+
+    {% for our_user in our_users %}
+    <tr>
+        <td>
+            {{ our_user.id }}. {{ our_user.name }} - {{ our_user.email }} <br>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br><br><br><br>
+
+{% endblock %}
