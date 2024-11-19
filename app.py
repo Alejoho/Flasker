@@ -41,14 +41,10 @@ class NamerForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
-# filters of jinja
-# safe
-# capitalize
-# lower
-# upper
-# title
-# trim
-# striptags
+@app.route("/update/<int:id>", methods=["GET", "POST"])
+def update(id):
+    print(id)
+    return render_template("update.html")
 
 
 @app.route("/user/add", methods=["GET", "POST"])
@@ -72,6 +68,16 @@ def add_user():
     return render_template(
         "add_user.html", form=form, name=my_name, our_users=our_users
     )
+
+
+# filters of jinja
+# safe
+# capitalize
+# lower
+# upper
+# title
+# trim
+# striptags
 
 
 @app.route("/")
