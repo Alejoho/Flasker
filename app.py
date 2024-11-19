@@ -44,8 +44,18 @@ class NamerForm(FlaskForm):
 
 @app.route("/update/<int:id>", methods=["GET", "POST"])
 def update(id):
-    print(id)
-    return render_template("update.html")
+    name = None
+    record = Users.query.get_or_404(id)
+    form = UserForm()
+
+    if form.validate_on_submit():
+
+        record.name = form.name.data
+        record.email = form.email.data
+        db.session.commit()
+        name = form.name.data
+
+    return render_template("update.html", form=form, name=name, record=record)
 
 
 @app.route("/user/add", methods=["GET", "POST"])

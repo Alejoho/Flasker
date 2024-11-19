@@ -1,0 +1,49 @@
+<!-- TODO: Create this template -->
+
+{% extends "base.html" %} {% block content %} {# flash message #}
+
+<br />
+
+{% for message in get_flashed_messages() %}
+
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    message
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+{% endfor %}
+
+
+{% if name %} {# renders the page after the post of the form #}
+
+<h1>User updated!!</h1>
+
+<br />
+<br /><br />
+
+{% else %} {# renders the form #}
+
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+    <h1>What's Your Name?</h1>
+    <br />
+
+    <form action="{{ url_for('update', id=record.id) }}" method="post">
+        {{ form.hidden_tag() }}
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control",value=record.name) }}
+        <br />
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control",value=record.email) }}
+        <br />
+        {{ form.submit(class="btn btn-secondary")}}
+    </form>
+
+</div>
+<br /><br />
+
+{% endif %}
+
+
+<br /><br /><br /><br />
+
+{% endblock %}
