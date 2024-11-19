@@ -1,10 +1,7 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %} {# flash message #}
 
-{% block content %}
+<br />
 
-{# flash message #}
-
-<br>
 {% for message in get_flashed_messages() %}
 
 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -15,52 +12,46 @@
 {% endfor %}
 
 
-{% if name %}
-
-{# renders the page after the post of the form #}
+{% if name %} {# renders the page after the post of the form #}
 
 <h1>User added!!</h1>
 
-<br>
-<br><br>
+<br />
+<br /><br />
 
-
-<script src="{{ url_for('static', filename='js/myfile.js')}}"></script>
-
-{% else %}
-
-{# renders the form #}
+{% else %} {# renders the form #}
 
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
-
     <h1>What's Your Name?</h1>
-    <br>
+    <br />
+
     <form method="post">
         {{ form.hidden_tag() }}
-
         {{ form.name.label(class="form-label") }}
         {{ form.name(class="form-control") }}
-        <br>
+        <br />
         {{ form.email.label(class="form-label") }}
         {{ form.email(class="form-control") }}
-        <br>
+        <br />
         {{ form.submit(class="btn btn-secondary")}}
     </form>
+
 </div>
-<br><br>
+<br /><br />
 
 {% endif %}
-<table class="table table-hover table-bordered table-striped">
 
+
+<table class="table table-hover table-bordered table-striped">
     {% for our_user in our_users %}
     <tr>
         <td>
-            {{ our_user.id }}. {{ our_user.name }} - {{ our_user.email }} <br>
+            {{ our_user.id }}. {{ our_user.name }} - {{ our_user.email }} <br />
         </td>
     </tr>
     {% endfor %}
 </table>
 
-<br><br><br><br>
+<br /><br /><br /><br />
 
 {% endblock %}
