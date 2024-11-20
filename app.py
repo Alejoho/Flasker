@@ -1,7 +1,13 @@
-from flask import Flask, render_template, flash, redirect, url_for
+from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms import (
+    StringField,
+    SubmitField,
+    PasswordField,
+    BooleanField,
+    ValidationError,
+)
+from wtforms.validators import DataRequired, EqualTo, Length
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from my_secrets import My_Secrets
@@ -28,7 +34,7 @@ class Users(db.Model):
     email = db.Column(db.String(120), nullable=False, unique=True)
     date_added = db.Column(db.DateTime, default=datetime.utcnow())
     favorite_color = db.Column(db.String(120))
-    password_hash = db.Column(db.String(128))
+    password_hash = db.Column(db.String(162))
 
     @property
     def password(self):
@@ -52,6 +58,16 @@ class UserForm(FlaskForm):
         validators=[DataRequired("You need to enter your email")],
     )
     favorite_color = StringField("Favorite Color")
+    password = PasswordField(
+        "Password",
+        validators=[
+            DataRequired(),
+            EqualTo("password_confirmation", "Passwords Must Match!"),
+        ],
+    )
+    password_confirmation = PasswordField(
+        "Password confirmation", validators=[DataRequired()]
+    )
     submit = SubmitField("Submit")
 
 
@@ -84,6 +100,8 @@ def update(id):
         record.name = form.name.data
         record.email = form.email.data
         record.favorite_color = form.favorite_color.data
+        record.password = form.password.data
+        record.password_confirmation = form.password_confirmation.data
         db.session.commit()
         name = form.name.data
 
@@ -101,23 +119,27 @@ def add_user():
             name=form.name.data,
             email=form.email.data,
             favorite_color=form.favorite_color.data,
+            password=form.password.data,
         )
         db.session.add(user)
-        try:
-            db.session.commit()
-        except Exception as er:
-            print(er)
-            flash("Integrity Error!", "error")
-        else:
-            my_name = form.name.data
-            form.name.data = ""
-            form.email.data = ""
-            form.favorite_color.data = ""
-            flash("User added succesfully!")
-            our_users = Users.query.order_by(Users.date_added)
-            return render_template(
-                "add_user.html", form=form, name=my_name, our_users=our_users
-            )
+        # try:
+        db.session.commit()
+        # except Exception as er:
+        #     print(er)
+        #     flash("Integrity Error!", "error")
+        #     return 404
+        # else:
+        my_name = form.name.data
+        form.name.data = ""
+        form.email.data = ""
+        form.favorite_color.data = ""
+        form.password.data = ""
+        form.password_confirmation.data = ""
+        flash("User added succesfully!")
+        our_users = Users.query.order_by(Users.date_added)
+        return render_template(
+            "add_user.html", form=form, name=my_name, our_users=our_users
+        )
 
     our_users = Users.query.order_by(Users.date_added)
 

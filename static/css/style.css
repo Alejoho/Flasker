@@ -10,3 +10,11 @@ body {
 #demo {
     font-size: .7rem;
 }
+
+#unique {
+    overflow-x: scroll;
+    width: 1300px;
+    display: block;
+    text-wrap: nowrap;
+    /* background-color: red; */
+}

@@ -36,6 +36,12 @@
         {{ form.favorite_color.label(class="form-label") }}
         {{ form.favorite_color(class="form-control") }}
         <br />
+        {{ form.password.label(class="form-label") }}
+        {{ form.password(class="form-control") }}
+        <br />
+        {{ form.password_confirmation.label(class="form-label") }}
+        {{ form.password_confirmation(class="form-control") }}
+        <br />
         {{ form.submit(class="btn btn-secondary")}}
     </form>
 
@@ -52,8 +58,8 @@
             {{ our_user.id }}.
             <a href="{{ url_for('update',id=our_user.id) }}">{{ our_user.name }}</a> -
             {{ our_user.email }} -
-            {{ our_user.favorite_color }} -
-            <a href="{{ url_for('delete_user',id=our_user.id) }}">delete</a><br />
+            {{ our_user.favorite_color }} - <a href="{{ url_for('delete_user',id=our_user.id) }}">delete</a>
+            <span id="unique">PW: {{ our_user.password_hash }}</span>
         </td>
     </tr>
     {% endfor %}
