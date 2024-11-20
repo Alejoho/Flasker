@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from my_secrets import My_Secrets
-from pymysql import err
+from flask_migrate import Migrate
 
 
 app = Flask(__name__)
@@ -18,12 +18,15 @@ app.config["SECRET_KEY"] = My_Secrets.key
 
 db = SQLAlchemy(app)
 
+migrate = Migrate(app, db)
+
 
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
     date_added = db.Column(db.DateTime, default=datetime.utcnow())
+    favorite_color = db.Column(db.String(120))
 
     def __repr__(self) -> str:
         return f"<Name {self.name}>"
@@ -35,6 +38,7 @@ class UserForm(FlaskForm):
         "Email",
         validators=[DataRequired("You need to enter your email")],
     )
+    favorite_color = StringField("Favorite Color")
     submit = SubmitField("Submit")
 
 
@@ -53,6 +57,7 @@ def update(id):
 
         record.name = form.name.data
         record.email = form.email.data
+        record.favorite_color = form.favorite_color.data
         db.session.commit()
         name = form.name.data
 
@@ -62,18 +67,18 @@ def update(id):
 @app.route("/user/add", methods=["GET", "POST"])
 def add_user():
     my_name = None
-    our_users = []
     form = UserForm()
 
     if form.validate_on_submit():
 
-        user = Users(name=form.name.data, email=form.email.data)
+        user = Users(
+            name=form.name.data,
+            email=form.email.data,
+            favorite_color=form.favorite_color.data,
+        )
         db.session.add(user)
         try:
             db.session.commit()
-        except err.IntegrityError as er:
-            print(er)
-            flash("Integrity Error!")
         except Exception as er:
             print(er)
             flash("Integrity Error!", "error")
@@ -82,8 +87,14 @@ def add_user():
             my_name = form.name.data
             form.name.data = ""
             form.email.data = ""
+            form.favorite_color.data = ""
             flash("User added succesfully!")
             our_users = Users.query.order_by(Users.date_added)
+            return render_template(
+                "add_user.html", form=form, name=my_name, our_users=our_users
+            )
+
+    our_users = Users.query.order_by(Users.date_added)
 
     return render_template(
         "add_user.html", form=form, name=my_name, our_users=our_users

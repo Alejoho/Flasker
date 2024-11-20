@@ -1,5 +1,3 @@
-<!-- TODO: Create this template -->
-
 {% extends "base.html" %} {% block content %} {# flash message #}
 
 <br />
@@ -34,6 +32,9 @@
         <br />
         {{ form.email.label(class="form-label") }}
         {{ form.email(class="form-control",value=record.email) }}
+        <br />
+        {{ form.favorite_color.label(class="form-label") }}
+        {{ form.favorite_color(class="form-control",value=record.favorite_color) }}
         <br />
         {{ form.submit(class="btn btn-secondary")}}
     </form>
