@@ -71,6 +71,12 @@ class UserForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
+class PasswordForm(FlaskForm):
+    email = StringField("Email", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+
 class NamerForm(FlaskForm):
     name = StringField("What's your name?", validators=[DataRequired()])
     submit = SubmitField("Submit")
@@ -194,3 +200,26 @@ def name():
         flash("Form submitted succesfully!")
 
     return render_template("name.html", name=my_name, form=form)
+
+
+@app.route("/test_password", methods=["GET", "POST"])
+def test_password():
+    user = None
+    password = None
+    passed = None
+    form = PasswordForm()
+
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+
+        form.email.data = ""
+        form.password.data = ""
+
+        user = Users.query.filter_by(email=email).first()
+
+        passed = user.verify_password(password)
+
+    return render_template(
+        "test_password.html", form=form, user=user, password=password, passed=passed
+    )

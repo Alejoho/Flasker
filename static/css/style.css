@@ -16,5 +16,6 @@ body {
     width: 1300px;
     display: block;
     text-wrap: nowrap;
-    /* background-color: red; */
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
