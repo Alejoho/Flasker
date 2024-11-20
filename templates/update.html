@@ -22,7 +22,7 @@
 {% else %} {# renders the form #}
 
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
-    <h1>What's Your Name?</h1>
+    <h1>What's Your New Name?</h1>
     <br />
 
     <form action="{{ url_for('update', id=record.id) }}" method="post">
@@ -37,6 +37,7 @@
         {{ form.favorite_color(class="form-control",value=record.favorite_color) }}
         <br />
         {{ form.submit(class="btn btn-secondary")}}
+        <a href="{{ url_for('delete_user',id=record.id) }}" class="btn btn-danger">delete</a>
     </form>
 
 </div>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect
+from flask import Flask, render_template, flash, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
@@ -47,6 +47,19 @@ class NamerForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
+@app.route("/delete/<int:id>")
+def delete_user(id):
+    user_to_delete = Users.query.get_or_404(id)
+    db.session.delete(user_to_delete)
+    try:
+        db.session.commit()
+    except Exception as err:
+        print(err)
+        return 404
+    flash("User Deleted Successfully!!")
+    return redirect(url_for("add_user"))
+
+
 @app.route("/update/<int:id>", methods=["GET", "POST"])
 def update(id):
     name = None
@@ -82,7 +95,6 @@ def add_user():
         except Exception as er:
             print(er)
             flash("Integrity Error!", "error")
-            # return redirect("/")
         else:
             my_name = form.name.data
             form.name.data = ""
