@@ -9,7 +9,7 @@ from wtforms import (
 )
 from wtforms.validators import DataRequired, EqualTo, Length
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timezone
 from my_secrets import My_Secrets
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -32,7 +32,7 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
-    date_added = db.Column(db.DateTime, default=datetime.utcnow())
+    date_added = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     favorite_color = db.Column(db.String(120))
     password_hash = db.Column(db.String(162))
 
