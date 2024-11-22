@@ -23,7 +23,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 )
 app.config["SECRET_KEY"] = My_Secrets.key
 
-db = SQLAlchemy(app)
+db = SQLAlchemy()
+db.init_app(app)
 
 migrate = Migrate(app, db)
 
