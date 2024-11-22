@@ -129,26 +129,28 @@ def add_user():
             password=form.password.data,
         )
         db.session.add(user)
-        # try:
-        db.session.commit()
-        # except Exception as er:
-        #     print(er)
-        #     flash("Integrity Error!", "error")
-        #     return 404
-        # else:
-        my_name = form.name.data
-        form.name.data = ""
-        form.email.data = ""
-        form.favorite_color.data = ""
-        form.password.data = ""
-        form.password_confirmation.data = ""
-        flash("User added succesfully!")
-        our_users = Users.query.order_by(Users.date_added)
-        return render_template(
-            "add_user.html", form=form, name=my_name, our_users=our_users
-        )
+        try:
+            db.session.commit()
+        except Exception as er:
+            print(er)
+            flash("Integrity Error!", "error")
+            db.session.rollback()
+        else:
+            my_name = form.name.data
+            form.name.data = ""
+            form.email.data = ""
+            form.favorite_color.data = ""
+            form.password.data = ""
+            form.password_confirmation.data = ""
+            flash("User added succesfully!")
+            # our_users = Users.query.order_by(Users.date_added)
+            # our_users = db.session.query(Users).order_by(Users.date_added)
+            # return render_template(
+            #     "add_user.html", form=form, name=my_name, our_users=our_users
+            # )
 
-    our_users = Users.query.order_by(Users.date_added)
+    # our_users = Users.query.order_by(Users.date_added)
+    our_users = db.session.query(Users).order_by(Users.date_added)
 
     return render_template(
         "add_user.html", form=form, name=my_name, our_users=our_users
