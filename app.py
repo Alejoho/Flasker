@@ -1,8 +1,9 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
-from my_secrets import My_Secrets
 from flask_migrate import Migrate
+
 from forms.users_forms import UserForm,NamerForm,PasswordForm
 from models.models import db,User
+from my_secrets import My_Secrets
 
 
 app = Flask(__name__)
@@ -16,7 +17,6 @@ app.config["SECRET_KEY"] = My_Secrets.key
 db.init_app(app)
 
 migrate = Migrate(app, db)
-
 
 @app.route("/delete/<int:id>")
 def delete_user(id):
@@ -78,28 +78,12 @@ def add_user():
             form.password.data = ""
             form.password_confirmation.data = ""
             flash("User added succesfully!")
-            # our_users = Users.query.order_by(Users.date_added)
-            # our_users = db.session.query(Users).order_by(Users.date_added)
-            # return render_template(
-            #     "add_user.html", form=form, name=my_name, our_users=our_users
-            # )
 
-    # our_users = Users.query.order_by(Users.date_added)
     our_users = db.session.query(User).order_by(User.date_added)
 
     return render_template(
         "add_user.html", form=form, name=my_name, our_users=our_users
     )
-
-
-# filters of jinja
-# safe
-# capitalize
-# lower
-# upper
-# title
-# trim
-# striptags
 
 
 @app.route("/")
@@ -115,16 +99,6 @@ def index():
 @app.route("/user/<name>")
 def user(name):
     return render_template("user.html", user_name=name)
-
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template("404.html"), 405
-
-
-@app.errorhandler(500)
-def page_not_found(e):
-    return render_template("500.html"), 500
 
 
 @app.route("/name", methods=["GET", "POST"])
@@ -161,6 +135,26 @@ def test_password():
     return render_template(
         "test_password.html", form=form, user=user, password=password, passed=passed
     )
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 405
+
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template("500.html"), 500
+
+
+# filters of jinja
+# safe
+# capitalize
+# lower
+# upper
+# title
+# trim
+# striptags
 
 
 if __name__ =="__main__":
