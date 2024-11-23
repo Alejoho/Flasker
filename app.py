@@ -1,18 +1,10 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
-from flask_wtf import FlaskForm
-from wtforms import (
-    StringField,
-    SubmitField,
-    PasswordField,
-    BooleanField,
-    ValidationError,
-)
-from wtforms.validators import DataRequired, EqualTo, Length
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
 from my_secrets import My_Secrets
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
+from forms.users_forms import UserForm,NamerForm,PasswordForm
 
 
 app = Flask(__name__)
@@ -52,35 +44,6 @@ class Users(db.Model):
         return f"<Name {self.name}>"
 
 
-class UserForm(FlaskForm):
-    name = StringField("Name", validators=[DataRequired()])
-    email = StringField(
-        "Email",
-        validators=[DataRequired("You need to enter your email")],
-    )
-    favorite_color = StringField("Favorite Color")
-    password = PasswordField(
-        "Password",
-        validators=[
-            DataRequired(),
-            EqualTo("password_confirmation", "Passwords Must Match!"),
-        ],
-    )
-    password_confirmation = PasswordField(
-        "Password confirmation", validators=[DataRequired()]
-    )
-    submit = SubmitField("Submit")
-
-
-class PasswordForm(FlaskForm):
-    email = StringField("Email", validators=[DataRequired()])
-    password = PasswordField("Password", validators=[DataRequired()])
-    submit = SubmitField("Submit")
-
-
-class NamerForm(FlaskForm):
-    name = StringField("What's your name?", validators=[DataRequired()])
-    submit = SubmitField("Submit")
 
 
 @app.route("/delete/<int:id>")
