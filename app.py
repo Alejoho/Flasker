@@ -1,10 +1,8 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime, timezone
 from my_secrets import My_Secrets
 from flask_migrate import Migrate
-from werkzeug.security import generate_password_hash, check_password_hash
 from forms.users_forms import UserForm,NamerForm,PasswordForm
+from models.models import db,User
 
 
 app = Flask(__name__)
@@ -15,40 +13,14 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 )
 app.config["SECRET_KEY"] = My_Secrets.key
 
-db = SQLAlchemy()
 db.init_app(app)
 
 migrate = Migrate(app, db)
 
 
-class Users(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200), nullable=False)
-    email = db.Column(db.String(120), nullable=False, unique=True)
-    date_added = db.Column(db.DateTime, default=datetime.now(timezone.utc))
-    favorite_color = db.Column(db.String(120))
-    password_hash = db.Column(db.String(162))
-
-    @property
-    def password(self):
-        raise AttributeError("password is not accesible")
-
-    @password.setter
-    def password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def verify_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
-    def __repr__(self) -> str:
-        return f"<Name {self.name}>"
-
-
-
-
 @app.route("/delete/<int:id>")
 def delete_user(id):
-    user_to_delete = Users.query.get_or_404(id)
+    user_to_delete = User.query.get_or_404(id)
     db.session.delete(user_to_delete)
     try:
         db.session.commit()
@@ -62,7 +34,7 @@ def delete_user(id):
 @app.route("/update/<int:id>", methods=["GET", "POST"])
 def update(id):
     name = None
-    record = Users.query.get_or_404(id)
+    record = User.query.get_or_404(id)
     form = UserForm()
 
     if form.validate_on_submit():
@@ -85,7 +57,7 @@ def add_user():
 
     if form.validate_on_submit():
 
-        user = Users(
+        user = User(
             name=form.name.data,
             email=form.email.data,
             favorite_color=form.favorite_color.data,
@@ -113,7 +85,7 @@ def add_user():
             # )
 
     # our_users = Users.query.order_by(Users.date_added)
-    our_users = db.session.query(Users).order_by(Users.date_added)
+    our_users = db.session.query(User).order_by(User.date_added)
 
     return render_template(
         "add_user.html", form=form, name=my_name, our_users=our_users
@@ -182,10 +154,14 @@ def test_password():
         form.email.data = ""
         form.password.data = ""
 
-        user = Users.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
 
         passed = user.verify_password(password)
 
     return render_template(
         "test_password.html", form=form, user=user, password=password, passed=passed
     )
+
+
+if __name__ =="__main__":
+    app.run(debug=True)
