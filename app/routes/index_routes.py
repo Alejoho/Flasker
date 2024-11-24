@@ -1,4 +1,6 @@
 from flask import Blueprint, render_template
+from datetime import date, timezone, datetime
+from pytz import UTC
 
 bp = Blueprint("index_routes", __name__)
 # static_folder="/app/static", template_folder="/app/templates"
@@ -15,4 +17,14 @@ def index():
         stuff=stuff,
         favorite_pizza=favorite_pizza,
     )
-    # return "Hello world!!"
+
+
+@bp.route("/dates")
+def dates():
+    dates = {
+        "my_date_zone": datetime.now(),
+        "utc": datetime.now(timezone.utc),
+        "utc_pytz": datetime.now(UTC),
+    }
+
+    return dates
