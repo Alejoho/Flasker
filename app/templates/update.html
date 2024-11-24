@@ -1,25 +1,23 @@
-{% extends "base.html" %} {% block content %} {# flash message #}
+{% extends "base.html" %}
+
+{% block content %}
 
 <br />
 
-{% for message in get_flashed_messages() %}
-
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    message
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-
-{% endfor %}
+{# flash message #}
+{% include "flashed_message.html" %}
 
 
-{% if name %} {# renders the page after the post of the form #}
+{% if name %}
+{# renders the page after the post of the form #}
 
 <h1>User updated!!</h1>
 
 <br />
 <br /><br />
 
-{% else %} {# renders the form #}
+{% else %}
+{# renders the form #}
 
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
     <h1>What's Your New Name?</h1>

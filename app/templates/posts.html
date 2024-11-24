@@ -1,23 +1,16 @@
 {% extends "base.html" %} {% block content %}
 
-{# flash message #}
 
 <br />
 
-{% for message in get_flashed_messages() %}
-
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ message }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-
-{% endfor %}
+{# flash message #}
+{% include "flashed_message.html" %}
 
 <h1>Blog Posts...</h1>
 <br>
 
-{# renders the posts #}
 
+{# renders the posts #}
 {% for post in posts %}
 
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded">

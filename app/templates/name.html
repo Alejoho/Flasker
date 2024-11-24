@@ -1,18 +1,13 @@
 {% extends "base.html" %}
 
-{% block content %} {# flash message #}
+{% block content %}
 
 <br />
-{% for message in get_flashed_messages() %}
+{# flash message #}
+{% include "flashed_message.html" %}
 
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ message }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-
-{% endfor %}
-
-{% if name %} {# renders the page after the post of the form #}
+{% if name %}
+{# renders the page after the post of the form #}
 
 <h1>Hello {{ name }}!!</h1>
 
@@ -24,7 +19,8 @@
 
 <script src="{{ url_for('static', filename='js/myfile.js')}}"></script>
 
-{% else %} {# renders the form #}
+{% else %}
+{# renders the form #}
 
 <h1>What's Your Name?</h1>
 <br />
