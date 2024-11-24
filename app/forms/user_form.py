@@ -1,12 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import (
-    StringField,
-    SubmitField,
-    PasswordField,
-    BooleanField,
-    ValidationError,
-)
-from wtforms.validators import DataRequired, EqualTo, Length
+from wtforms import StringField, SubmitField, PasswordField
+from wtforms.validators import DataRequired, EqualTo
+
 
 class UserForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
@@ -25,15 +20,4 @@ class UserForm(FlaskForm):
     password_confirmation = PasswordField(
         "Password confirmation", validators=[DataRequired()]
     )
-    submit = SubmitField("Submit")
-
-
-class PasswordForm(FlaskForm):
-    email = StringField("Email", validators=[DataRequired()])
-    password = PasswordField("Password", validators=[DataRequired()])
-    submit = SubmitField("Submit")
-
-
-class NamerForm(FlaskForm):
-    name = StringField("What's your name?", validators=[DataRequired()])
     submit = SubmitField("Submit")
