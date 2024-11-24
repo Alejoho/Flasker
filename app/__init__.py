@@ -17,10 +17,13 @@ def create_app():
     app = Flask(__name__)
 
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+    # app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+    app.config["SQLALCHEMY_DATABASE_URI"] = (
+        "mysql+pymysql://root:1234567890@localhost/tests.db"
+    )
 
-    # print(f"SECRET_KEY: {os.environ.get('SECRET_KEY')}")
-    # print(f"DATABASE_URL: {os.environ.get('DATABASE_URL')}")
+    print(f"SECRET_KEY: {os.environ.get('SECRET_KEY')}")
+    print(f"DATABASE_URL: {os.environ.get('DATABASE_URL')}")
 
     # app.config.from_object("config.Config")
 
@@ -32,12 +35,14 @@ def create_app():
         error_routes_bp,
         index_routes_bp,
         name_routes_bp,
-        users_routes_bp,
+        user_routes_bp,
+        post_routes_bp,
     )
 
-    app.register_blueprint(error_routes_bp, url_prefix="/error")
+    app.register_blueprint(error_routes_bp, url_prefix="/error_m")
     app.register_blueprint(index_routes_bp)
-    app.register_blueprint(name_routes_bp, url_prefix="/name")
-    app.register_blueprint(users_routes_bp, url_prefix="/user")
+    app.register_blueprint(name_routes_bp, url_prefix="/name_m")
+    app.register_blueprint(user_routes_bp, url_prefix="/user_m")
+    app.register_blueprint(post_routes_bp, url_prefix="/post-m")
 
     return app
