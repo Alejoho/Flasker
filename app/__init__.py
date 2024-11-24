@@ -17,13 +17,7 @@ def create_app():
     app = Flask(__name__)
 
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
-    # app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
-    app.config["SQLALCHEMY_DATABASE_URI"] = (
-        "mysql+pymysql://root:1234567890@localhost/tests.db"
-    )
-
-    print(f"SECRET_KEY: {os.environ.get('SECRET_KEY')}")
-    print(f"DATABASE_URL: {os.environ.get('DATABASE_URL')}")
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 
     # app.config.from_object("config.Config")
 
