@@ -73,7 +73,7 @@ def add_user():
 
             flash("User added succesfully!")
 
-    our_users = db.session.query(User).order_by(User.date_added)
+    our_users = db.session.query(User).order_by(User.date_added).all()
 
     return render_template(
         "add_user.html", form=form, name=my_name, our_users=our_users

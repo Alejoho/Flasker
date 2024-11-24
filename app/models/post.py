@@ -9,4 +9,4 @@ class Post(db.Model):
     content = db.Column(db.Text)
     author = db.Column(db.String(255))
     date_posted = db.Column(db.DateTime, default=datetime.now())
-    slug = db.Column(db.String)
+    slug = db.Column(db.String(255))

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash
+from flask import Blueprint, render_template, flash, redirect, url_for
 from app.forms import PostForm
 from app.models import Post
 from app import db
@@ -29,4 +29,14 @@ def add_post():
 
         flash("Blog Post Submited Successfuly")
 
+        return redirect(url_for("post_routes.posts"))
+
     return render_template("add_post.html", form=form)
+
+
+@bp.route("/posts")
+def posts():
+    posts = Post.query.order_by(Post.date_posted).all()
+    # posts = db.session.query(Post).order_by(Post.date_posted).all()
+
+    return render_template("posts.html", posts=posts)
