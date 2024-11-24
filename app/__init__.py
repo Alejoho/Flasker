@@ -1,12 +1,12 @@
-# import os
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 # from flask_wtf.csrf import CSRFProtect
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-# load_dotenv()„
+load_dotenv()
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -15,14 +15,14 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
-    # app.config.from_object('config.Config')
 
-    from my_secrets import My_Secrets
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = (
-        f"mysql+pymysql://{My_Secrets.user_name}:{My_Secrets.password}@localhost/{My_Secrets.db_name}"
-    )
-    app.config["SECRET_KEY"] = My_Secrets.key
+    # print(f"SECRET_KEY: {os.environ.get('SECRET_KEY')}")
+    # print(f"DATABASE_URL: {os.environ.get('DATABASE_URL')}")
+
+    # app.config.from_object("config.Config")
 
     db.init_app(app)
     migrate.init_app(app, db)
