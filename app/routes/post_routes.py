@@ -27,7 +27,7 @@ def add_post():
         db.session.add(post)
         db.session.commit()
 
-        flash("Blog Post Submited Successfuly")
+        flash("Post Has Been Created")
 
         return redirect(url_for("post_routes.posts"))
 
@@ -60,13 +60,14 @@ def edit_post(id):
         post.slug = form.slug.data
         post.content = form.content.data
 
-        db.session.add(post)
         try:
             db.session.commit()
         except Exception as err:
             print(err)
             db.session.rollback()
             flash("There was an error editing the post")
+
+        flash("Post Has Been Updated!")
 
         return redirect(url_for("post_routes.posts"))
 
@@ -76,3 +77,19 @@ def edit_post(id):
     form.content.data = post.content
 
     return render_template("add_edit_post.html", form=form, post=post)
+
+
+@bp.route("/posts/delete/<int:id>", methods=["GET", "POST"])
+def delete_post(id):
+    post = Post.query.get_or_404(id)
+
+    db.session.delete(post)
+    try:
+        db.session.commit()
+    except Exception as err:
+        print(err)
+        flash("There was an error deleting the post")
+
+    flash("Post Has Been Deleted")
+
+    return redirect(url_for("post_routes.posts"))

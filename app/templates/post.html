@@ -18,6 +18,10 @@
     Edit Post
 </a>
 
+<a href="{{url_for('post_routes.delete_post',id=post.id)}}" class="btn btn-outline-danger">
+    Delete Post
+</a>
+
 <a href="{{url_for('post_routes.posts')}}" class="btn btn-outline-secondary">
     Back to blog
 </a>
