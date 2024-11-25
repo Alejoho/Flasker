@@ -12,9 +12,14 @@
 
     <br><br>
 
-    <a href="{{url_for('post_routes.posts')}}" class="btn btn-outline-secondary">
-        Back to blog
-    </a>
 </div>
+
+<a href="{{url_for('post_routes.edit_post',id=post.id)}}" class="btn btn-outline-secondary">
+    Edit Post
+</a>
+
+<a href="{{url_for('post_routes.posts')}}" class="btn btn-outline-secondary">
+    Back to blog
+</a>
 
 {% endblock %}

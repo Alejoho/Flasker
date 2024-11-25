@@ -31,7 +31,7 @@ def add_post():
 
         return redirect(url_for("post_routes.posts"))
 
-    return render_template("add_post.html", form=form)
+    return render_template("add_edit_post.html", form=form, post=None)
 
 
 @bp.route("/posts")
@@ -47,3 +47,32 @@ def post(id):
     post = Post.query.get_or_404(id)
 
     return render_template("post.html", post=post)
+
+
+@bp.route("/posts/edit/<int:id>", methods=["GET", "POST"])
+def edit_post(id):
+    post = Post.query.get_or_404(id)
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.author = form.author.data
+        post.slug = form.slug.data
+        post.content = form.content.data
+
+        db.session.add(post)
+        try:
+            db.session.commit()
+        except Exception as err:
+            print(err)
+            db.session.rollback()
+            flash("There was an error editing the post")
+
+        return redirect(url_for("post_routes.posts"))
+
+    form.title.data = post.title
+    form.author.data = post.author
+    form.slug.data = post.slug
+    form.content.data = post.content
+
+    return render_template("add_edit_post.html", form=form, post=post)
