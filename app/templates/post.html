@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% block content %}
+
+<br />
+
+{# renders the post #}
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+
+    <h2>{{ post.title }}</h2>
+    <small>By: {{ post.author }} <br>
+        {{ post.date_posted }} | {{ post.slug }} </small> <br><br>
+    {{ post.content }}
+
+    <br><br>
+
+    <a href="{{url_for('post_routes.posts')}}" class="btn btn-outline-secondary">
+        Back to blog
+    </a>
+</div>
+
+{% endblock %}

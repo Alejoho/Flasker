@@ -17,8 +17,14 @@
 
     <h2>{{ post.title }}</h2>
     <small>By: {{ post.author }} <br>
-        {{ post.date_posted }} | {{ post.slug }} </small> <br><br>
+        {{ post.date_posted }} | {{ post.slug }} </small> <br>
     {{ post.content }}
+    <br>
+    <br>
+
+    <a href="{{url_for('post_routes.post',id=post.id)}}" class="btn btn-outline-secondary">
+        View Post
+    </a>
 
 </div>
 

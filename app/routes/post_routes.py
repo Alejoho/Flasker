@@ -40,3 +40,10 @@ def posts():
     # posts = db.session.query(Post).order_by(Post.date_posted).all()
 
     return render_template("posts.html", posts=posts)
+
+
+@bp.route("/posts/<int:id>")
+def post(id):
+    post = Post.query.get_or_404(id)
+
+    return render_template("post.html", post=post)
