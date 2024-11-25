@@ -33,10 +33,10 @@ def create_app():
         post_routes_bp,
     )
 
-    app.register_blueprint(error_routes_bp, url_prefix="/error_m")
+    app.register_blueprint(error_routes_bp)
     app.register_blueprint(index_routes_bp)
-    app.register_blueprint(name_routes_bp, url_prefix="/name_m")
-    app.register_blueprint(user_routes_bp, url_prefix="/user_m")
-    app.register_blueprint(post_routes_bp, url_prefix="/post-m")
+    app.register_blueprint(name_routes_bp)
+    app.register_blueprint(user_routes_bp)
+    app.register_blueprint(post_routes_bp)
 
     return app
