@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from app.models import User
 from app import db
-from app.forms import UserForm, PasswordForm
+from app.forms import UserForm, PasswordForm, LoginForm
+from flask_login import login_required, login_user, logout_user
 
 
 bp = Blueprint("user_routes", __name__)
@@ -30,6 +31,7 @@ def update(id):
     if form.validate_on_submit():
 
         record.name = form.name.data
+        record.username = form.username.data
         record.email = form.email.data
         record.favorite_color = form.favorite_color.data
         record.password = form.password.data
@@ -49,6 +51,7 @@ def add_user():
 
         user = User(
             name=form.name.data,
+            username=form.username.data,
             email=form.email.data,
             favorite_color=form.favorite_color.data,
             password=form.password.data,
@@ -66,6 +69,7 @@ def add_user():
             my_name = form.name.data
 
             form.name.data = ""
+            form.username.data = ""
             form.email.data = ""
             form.favorite_color.data = ""
             form.password.data = ""
@@ -101,3 +105,39 @@ def test_password():
     return render_template(
         "test_password.html", form=form, user=user, password=password, passed=passed
     )
+
+
+@bp.route("/dashboard", methods=["GET", "POST"])
+@login_required
+def dashboard():
+    return render_template("dashboard.html")
+
+
+@bp.route("/login", methods=["GET", "POST"])
+def login():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+
+        if user is None:
+            flash("Username doesn't exist.")
+            return render_template("login.html", form=form)
+
+        if user.verify_password(form.password.data) == False:
+            flash("Password incorrect..")
+            return render_template("login.html", form=form)
+
+        login_user(user)
+        flash("Login Succesfull!!")
+        return redirect(url_for("user_routes.dashboard"))
+
+    return render_template("login.html", form=form)
+
+
+@bp.get("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Logout Succesfull.")
+    return redirect(url_for("user_routes.login"))
