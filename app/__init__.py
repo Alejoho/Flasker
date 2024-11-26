@@ -2,15 +2,15 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_wtf.csrf import CSRFProtect
 
-# from flask_wtf.csrf import CSRFProtect
 from dotenv import load_dotenv
 
 load_dotenv()
 
 db = SQLAlchemy()
 migrate = Migrate()
-# csrf = CSRFProtect()
+csrf = CSRFProtect()
 
 
 def create_app():
@@ -23,7 +23,8 @@ def create_app():
 
     db.init_app(app)
     migrate.init_app(app, db)
-    # csrf.init_app(app)
+    csrf.init_app(app)
+    login_manager.init_app(app)
 
     from app.routes import (
         error_routes_bp,
