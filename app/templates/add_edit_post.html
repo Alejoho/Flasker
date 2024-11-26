@@ -8,9 +8,9 @@
 {# flash message #}
 {% include "flashed_message.html" %}
 
+{% if current_user.is_authenticated %}
 
-
-{# renders the form #}
+{# renders the form if the user is authenticated #}
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
 
     {% if post %}
@@ -48,6 +48,12 @@
 <a href="{{url_for('post_routes.posts')}}" class="btn btn-outline-secondary">
     Back to blog
 </a>
+
+{% else %}
+
+{% include "login_required_page.html" %}
+
+{% endif %}
 
 <br><br><br>
 

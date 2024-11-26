@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
+from flask_login import login_required
 from app.forms import PostForm
 from app.models import Post
 from app import db
@@ -7,6 +8,7 @@ bp = Blueprint("post_routes", __name__)
 
 
 @bp.route("/add-post", methods=["GET", "POST"])
+# @login_required
 def add_post():
     form = PostForm()
 
@@ -50,6 +52,7 @@ def post(id):
 
 
 @bp.route("/posts/edit/<int:id>", methods=["GET", "POST"])
+@login_required
 def edit_post(id):
     post = Post.query.get_or_404(id)
     form = PostForm()
@@ -80,6 +83,7 @@ def edit_post(id):
 
 
 @bp.route("/posts/delete/<int:id>", methods=["GET", "POST"])
+@login_required
 def delete_post(id):
     post = Post.query.get_or_404(id)
 
