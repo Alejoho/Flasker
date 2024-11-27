@@ -55,6 +55,11 @@ def post(id):
 @login_required
 def edit_post(id):
     post = Post.query.get_or_404(id)
+
+    if check_owner(post.user_id) == False:
+        flash("You can't edit a post you don't own!!")
+        return redirect(url_for("post_routes.posts"))
+
     form = PostForm()
 
     if form.validate_on_submit():
@@ -87,6 +92,10 @@ def edit_post(id):
 def delete_post(id):
     post = Post.query.get_or_404(id)
 
+    if check_owner(post.user_id) == False:
+        flash("You can't delete a post you don't own!!")
+        return redirect(url_for("post_routes.posts"))
+
     db.session.delete(post)
     try:
         db.session.commit()
@@ -97,3 +106,7 @@ def delete_post(id):
     flash("Post Has Been Deleted")
 
     return redirect(url_for("post_routes.posts"))
+
+
+def check_owner(user_id):
+    return user_id == current_user.id

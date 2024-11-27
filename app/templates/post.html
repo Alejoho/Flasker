@@ -14,11 +14,11 @@
 
 </div>
 
+{% if post.user_id == current_user.id %}
 <a href="{{url_for('post_routes.edit_post',id=post.id)}}" class="btn btn-outline-secondary">
     Edit Post
 </a>
 
-{% if post.user_id == current_user.id %}
 <a href="{{url_for('post_routes.delete_post',id=post.id)}}" class="btn btn-outline-danger">
     Delete Post
 </a>
