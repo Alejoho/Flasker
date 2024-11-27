@@ -9,6 +9,7 @@ bp = Blueprint("user_routes", __name__)
 
 
 @bp.route("/delete/<int:id>")
+@login_required
 def delete_user(id):
     user_to_delete = User.query.get_or_404(id)
     db.session.delete(user_to_delete)
@@ -22,24 +23,29 @@ def delete_user(id):
     return redirect(url_for("user_routes.add_user"))
 
 
-@bp.route("/update/<int:id>", methods=["GET", "POST"])
-def update(id):
+@bp.route("/update", methods=["GET", "POST"])
+@login_required
+def update():
     name = None
-    record = User.query.get_or_404(id)
+    # record = User.query.get_or_404(id)
     form = UserForm()
 
     if form.validate_on_submit():
 
-        record.name = form.name.data
-        record.username = form.username.data
-        record.email = form.email.data
-        record.favorite_color = form.favorite_color.data
-        record.password = form.password.data
-        record.password_confirmation = form.password_confirmation.data
-        db.session.commit()
-        name = form.name.data
+        current_user.name = form.name.data
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.favorite_color = form.favorite_color.data
+        current_user.password = form.password.data
+        current_user.password_confirmation = form.password_confirmation.data
 
-    return render_template("update.html", form=form, name=name, record=record)
+        db.session.commit()
+
+        flash("User Profile Updated")
+
+        return redirect(url_for("user_routes.dashboard"))
+
+    return render_template("update.html", form=form)
 
 
 @bp.route("/user/add", methods=["GET", "POST"])
@@ -75,7 +81,9 @@ def add_user():
             form.password.data = ""
             form.password_confirmation.data = ""
 
-            flash("User added succesfully!")
+            flash("User Registration succesfully! \nPlease Login")
+
+            return redirect(url_for("user_routes.login"))
 
     our_users = db.session.query(User).order_by(User.date_added).all()
 

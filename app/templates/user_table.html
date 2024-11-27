@@ -3,7 +3,7 @@
     <tr>
         <td>
             {{ our_user.id }}.
-            <a href="{{ url_for('user_routes.update',id=our_user.id) }}">{{ our_user.name }}</a> -
+            <a href="{{ url_for('user_routes.update') }}">{{ our_user.name }}</a> -
             {{ our_user.username }} - {{ our_user.email }} -
             {{ our_user.favorite_color }} - <a href="{{ url_for('user_routes.delete_user',id=our_user.id) }}">delete</a>
             <span id="unique">PW: {{ our_user.password_hash }}</span>

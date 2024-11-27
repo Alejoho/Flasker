@@ -1,23 +1,25 @@
-<form action="{{ url_for('user_routes.update', id=record.id) }}" method="post">
+<form action="{{ url_for('user_routes.update') }}" method="post">
     {{ form.hidden_tag() }}
     {{ form.name.label(class="form-label") }}
-    {{ form.name(class="form-control",value=record.name) }}
+    {{ form.name(class="form-control",value=current_user.name) }}
     <br />
     {{ form.username.label(class="form-label") }}
-    {{ form.username(class="form-control",value=record.username) }}
+    {{ form.username(class="form-control",value=current_user.username) }}
     <br />
     {{ form.email.label(class="form-label") }}
-    {{ form.email(class="form-control",value=record.email) }}
+    {{ form.email(class="form-control",value=current_user.email) }}
     <br />
     {{ form.favorite_color.label(class="form-label") }}
-    {{ form.favorite_color(class="form-control",value=record.favorite_color) }}
+    {{ form.favorite_color(class="form-control",value=current_user.favorite_color) }}
     <br />
     {{ form.password.label(class="form-label") }}
-    {{ form.password(class="form-control",value=record.favorite_color) }}
+    {{ form.password(class="form-control",value=current_user.favorite_color) }}
     <br />
     {{ form.password_confirmation.label(class="form-label") }}
-    {{ form.password_confirmation(class="form-control",value=record.favorite_color) }}
+    {{ form.password_confirmation(class="form-control",value=current_user.favorite_color) }}
     <br />
     {{ form.submit(class="btn btn-secondary") }}
-    <!-- <a href="{{ url_for('user_routes.delete_user',id=record.id) }}" class="btn btn-danger">delete</a> -->
+    {#
+    <a href="{{ url_for('user_routes.delete_user',id=current_user.id) }}" class="btn btn-danger">delete</a>
+    #}
 </form>
