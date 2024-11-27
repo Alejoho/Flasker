@@ -13,7 +13,7 @@
     <form method="post">
         {{ form.hidden_tag() }}
         {{ form.username.label(class="form-label") }}
-        {{ form.username(class="form-control") }}
+        {{ form.username(class="form-control", autofocus=True) }}
         <br />
         {{ form.password.label(class="form-label") }}
         {{ form.password(class="form-control") }}

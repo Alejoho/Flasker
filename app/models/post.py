@@ -13,7 +13,7 @@ class Post(db.Model):
     date_posted: Mapped[datetime] = mapped_column(default=datetime.now())
     slug = mapped_column(String(255))
 
-    user_id = mapped_column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
 
 
 # class Post(db.Model):

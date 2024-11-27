@@ -6,7 +6,7 @@
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
 
     <h2>{{ post.title }}</h2>
-    <small>By: {{ post.author }} <br>
+    <small>By: {{ post.owner_user.name }} <br>
         {{ post.date_posted }} | {{ post.slug }} </small> <br><br>
     {{ post.content }}
 
@@ -18,9 +18,11 @@
     Edit Post
 </a>
 
+{% if post.user_id == current_user.id %}
 <a href="{{url_for('post_routes.delete_post',id=post.id)}}" class="btn btn-outline-danger">
     Delete Post
 </a>
+{% endif %}
 
 <a href="{{url_for('post_routes.posts')}}" class="btn btn-outline-secondary">
     Back to blog

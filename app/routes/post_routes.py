@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
-from flask_login import login_required
+from flask_login import login_required, current_user
 from app.forms import PostForm
 from app.models import Post
 from app import db
@@ -15,17 +15,17 @@ def add_post():
     if form.validate_on_submit():
         post = Post(
             title=form.title.data,
-            author=form.author.data,
+            # author=form.author.data,
             slug=form.slug.data,
             content=form.content.data,
+            user_id=current_user.id,
         )
 
         form.title.data = ""
-        form.author.data = ""
+        # form.author.data = ""
         form.slug.data = ""
         form.content.data = ""
 
-        # TODO: look up how to migrate the last changes to the db using the new structure of the app
         db.session.add(post)
         db.session.commit()
 
@@ -59,7 +59,7 @@ def edit_post(id):
 
     if form.validate_on_submit():
         post.title = form.title.data
-        post.author = form.author.data
+        # post.author = form.author.data
         post.slug = form.slug.data
         post.content = form.content.data
 
@@ -75,7 +75,7 @@ def edit_post(id):
         return redirect(url_for("post_routes.posts"))
 
     form.title.data = post.title
-    form.author.data = post.author
+    # form.author.data = post.author
     form.slug.data = post.slug
     form.content.data = post.content
 
