@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
 from app import db
 from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import Optional
 
 
@@ -17,6 +17,8 @@ class User(db.Model, UserMixin):
     date_added: Mapped[datetime] = mapped_column(default=datetime.now())
     favorite_color: Mapped[Optional[str]] = mapped_column(String(120))
     password_hash: Mapped[str] = mapped_column(String(162))
+
+    posts = relationship("Post", backref="owner_user")
 
     @property
     def password(self):

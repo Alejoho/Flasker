@@ -9,7 +9,7 @@ bp = Blueprint("user_routes", __name__)
 
 
 @bp.route("/delete/<int:id>")
-@login_required
+# @login_required
 def delete_user(id):
     user_to_delete = User.query.get_or_404(id)
     db.session.delete(user_to_delete)
