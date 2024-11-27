@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash
 from app.models import User
 from app import db
 from app.forms import UserForm, PasswordForm, LoginForm
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 
 
 bp = Blueprint("user_routes", __name__)
@@ -110,7 +110,9 @@ def test_password():
 @bp.route("/dashboard", methods=["GET", "POST"])
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    form = UserForm()
+
+    return render_template("dashboard.html", form=form, record=current_user)
 
 
 @bp.route("/login", methods=["GET", "POST"])

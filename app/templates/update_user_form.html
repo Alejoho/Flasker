@@ -1,0 +1,23 @@
+<form action="{{ url_for('user_routes.update', id=record.id) }}" method="post">
+    {{ form.hidden_tag() }}
+    {{ form.name.label(class="form-label") }}
+    {{ form.name(class="form-control",value=record.name) }}
+    <br />
+    {{ form.username.label(class="form-label") }}
+    {{ form.username(class="form-control",value=record.username) }}
+    <br />
+    {{ form.email.label(class="form-label") }}
+    {{ form.email(class="form-control",value=record.email) }}
+    <br />
+    {{ form.favorite_color.label(class="form-label") }}
+    {{ form.favorite_color(class="form-control",value=record.favorite_color) }}
+    <br />
+    {{ form.password.label(class="form-label") }}
+    {{ form.password(class="form-control",value=record.favorite_color) }}
+    <br />
+    {{ form.password_confirmation.label(class="form-label") }}
+    {{ form.password_confirmation(class="form-control",value=record.favorite_color) }}
+    <br />
+    {{ form.submit(class="btn btn-secondary") }}
+    <!-- <a href="{{ url_for('user_routes.delete_user',id=record.id) }}" class="btn btn-danger">delete</a> -->
+</form>
