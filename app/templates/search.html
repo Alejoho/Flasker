@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br>
+<h2>You Searched For: <em>{{ term_searched }}</em></h2>
+<br>
+
+{% if not posts %}
+
+Sorry, your search term: <strong>{{ term_searched }}</strong> was not found...
+
+{% endif %}
+
+
+{% for post in posts %}
+
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+
+    <h2>{{ post.title }}</h2>
+    <small>By: {{ post.owner_user.name}} <br>
+        {{ post.date_posted }} | {{ post.slug }} </small> <br>
+    {{ post.content }}
+    <br>
+    <br>
+
+    <a href="{{url_for('post_routes.post',id=post.id)}}" class="btn btn-outline-secondary">
+        View Post
+    </a>
+
+    {% if post.user_id == current_user.id %}
+    <a href="{{url_for('post_routes.edit_post',id=post.id)}}" class="btn btn-outline-secondary">
+        Edit Post
+    </a>
+
+    <a href="{{url_for('post_routes.delete_post',id=post.id)}}" class="btn btn-outline-danger">
+        Delete Post
+    </a>
+    {% endif %}
+
+</div>
+
+
+{% endfor %}
+
+{% endblock %}

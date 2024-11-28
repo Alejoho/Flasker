@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
 from flask_login import login_required, current_user
-from app.forms import PostForm
+from sqlalchemy import select
+from app.forms import PostForm, SearchForm
 from app.models import Post
 from app import db
 
@@ -110,3 +111,26 @@ def delete_post(id):
 
 def check_owner(user_id):
     return user_id == current_user.id
+
+
+@bp.post("/search")
+def search():
+    form = SearchForm()
+
+    if form.validate_on_submit():
+        term_searched = form.searched.data
+
+        stmt = select(Post)
+        stmt = stmt.where(Post.content.like("%" + term_searched + "%"))
+        stmt = stmt.order_by(Post.title)
+        print(stmt)
+        posts = list(db.session.scalars(stmt))
+        # posts = db.session.execute(stmt)
+        return render_template("search.html", term_searched=term_searched, posts=posts)
+
+
+@bp.app_context_processor
+def base_context():
+    form = SearchForm()
+    return dict(form=form)
+    # return dict(form=form, test="ale")
