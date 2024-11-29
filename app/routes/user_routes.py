@@ -45,7 +45,7 @@ def update():
 
         return redirect(url_for("user_routes.dashboard"))
 
-    return render_template("update.html", form=form)
+    return render_template("user/update.html", form=form)
 
 
 @bp.route("/user/add", methods=["GET", "POST"])
@@ -88,7 +88,7 @@ def add_user():
     our_users = db.session.query(User).order_by(User.date_added).all()
 
     return render_template(
-        "add_user.html", form=form, name=my_name, our_users=our_users
+        "user/add_user.html", form=form, name=my_name, our_users=our_users
     )
 
 
@@ -111,7 +111,11 @@ def test_password():
         passed = user.verify_password(password)
 
     return render_template(
-        "test_password.html", form=form, user=user, password=password, passed=passed
+        "user/test_password.html",
+        form=form,
+        user=user,
+        password=password,
+        passed=passed,
     )
 
 
@@ -120,7 +124,7 @@ def test_password():
 def dashboard():
     form = UserForm()
 
-    return render_template("dashboard.html", form=form, record=current_user)
+    return render_template("user/dashboard.html", form=form, record=current_user)
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -132,17 +136,17 @@ def login():
 
         if user is None:
             flash("Username doesn't exist.")
-            return render_template("login.html", form=form)
+            return render_template("login/login.html", form=form)
 
         if user.verify_password(form.password.data) == False:
             flash("Password incorrect..")
-            return render_template("login.html", form=form)
+            return render_template("login/login.html", form=form)
 
         login_user(user)
         flash("Login Succesfull!!")
         return redirect(url_for("user_routes.dashboard"))
 
-    return render_template("login.html", form=form)
+    return render_template("login/login.html", form=form)
 
 
 @bp.get("/logout")

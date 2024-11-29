@@ -6,7 +6,7 @@
 <br />
 
 {# flash message #}
-{% include "flashed_message.html" %}
+{% include "complement/flashed_message.html" %}
 
 {% if current_user.is_authenticated %}
 
@@ -48,7 +48,7 @@
 
 {% else %}
 
-{% include "login_required_page.html" %}
+{% include "login/login_required_page.html" %}
 
 {% endif %}
 

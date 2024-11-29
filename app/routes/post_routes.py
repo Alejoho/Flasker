@@ -34,7 +34,7 @@ def add_post():
 
         return redirect(url_for("post_routes.posts"))
 
-    return render_template("add_edit_post.html", form=form, post=None)
+    return render_template("post/add_edit_post.html", form=form, post=None)
 
 
 @bp.route("/posts")
@@ -42,14 +42,14 @@ def posts():
     posts = Post.query.order_by(Post.date_posted).all()
     # posts = db.session.query(Post).order_by(Post.date_posted).all()
 
-    return render_template("posts.html", posts=posts)
+    return render_template("post/posts.html", posts=posts)
 
 
 @bp.route("/posts/<int:id>")
 def post(id):
     post = Post.query.get_or_404(id)
 
-    return render_template("post.html", post=post)
+    return render_template("post/post.html", post=post)
 
 
 @bp.route("/posts/edit/<int:id>", methods=["GET", "POST"])
@@ -85,7 +85,7 @@ def edit_post(id):
     form.slug.data = post.slug
     form.content.data = post.content
 
-    return render_template("add_edit_post.html", form=form, post=post)
+    return render_template("post/add_edit_post.html", form=form, post=post)
 
 
 @bp.route("/posts/delete/<int:id>", methods=["GET", "POST"])
@@ -126,7 +126,9 @@ def search():
         print(stmt)
         posts = list(db.session.scalars(stmt))
         # posts = db.session.execute(stmt)
-        return render_template("search.html", term_searched=term_searched, posts=posts)
+        return render_template(
+            "post/search.html", term_searched=term_searched, posts=posts
+        )
 
 
 @bp.app_context_processor

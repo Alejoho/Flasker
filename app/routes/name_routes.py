@@ -6,7 +6,7 @@ bp = Blueprint("name_routes", __name__)
 
 @bp.route("/user/<name>")
 def user(name):
-    return render_template("user.html", user_name=name)
+    return render_template("user/user.html", user_name=name)
 
 
 @bp.route("/name", methods=["GET", "POST"])
