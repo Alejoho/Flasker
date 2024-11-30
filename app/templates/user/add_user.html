@@ -19,31 +19,31 @@
 {% else %}
 {# renders the form #}
 
-<div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+{% macro input(field) %}
+
+<div class="form-floating mb-4">
+    <!-- TODO: How can i get the content of the label to put in the placeholder of the input -->
+    {{ field(class="form-control", id=field.id, placeholder=field.name | capitalize()) }}
+    {{ field.label(for=field.id) }}
+
+</div>
+
+{% endmacro %}
+
+
+<div class="shadow p-3 mb-3 bg-body-tertiary rounded">
     <h1>What's Your Name?</h1>
     <br />
 
     <form method="post">
         {{ form.hidden_tag() }}
-        {{ form.name.label(class="form-label") }}
-        {{ form.name(class="form-control") }}
-        <br />
-        {{ form.username.label(class="form-label") }}
-        {{ form.username(class="form-control") }}
-        <br />
-        {{ form.email.label(class="form-label") }}
-        {{ form.email(class="form-control") }}
-        <br />
-        {{ form.favorite_color.label(class="form-label") }}
-        {{ form.favorite_color(class="form-control") }}
-        <br />
-        {{ form.password.label(class="form-label") }}
-        {{ form.password(class="form-control") }}
-        <br />
-        {{ form.password_confirmation.label(class="form-label") }}
-        {{ form.password_confirmation(class="form-control") }}
-        <br />
-        {{ form.submit(class="btn btn-secondary")}}
+        {{ input(form.name) }}
+        {{ input(form.username) }}
+        {{ input(form.email) }}
+        {{ input(form.favorite_color) }}
+        {{ input(form.password) }}
+        {{ input(form.password_confirmation) }}
+        {{ form.submit(class="btn btn-secondary") }}
     </form>
 
 </div>
