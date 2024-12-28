@@ -28,3 +28,8 @@ def dates():
     }
 
     return dates
+
+
+@bp.get("/bootest")
+def bootest():
+    return render_template("bootest.html")

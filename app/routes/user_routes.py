@@ -85,6 +85,9 @@ def add_user():
 
             return redirect(url_for("user_routes.login"))
 
+    for error in form.name.errors:
+        print(error)
+
     our_users = db.session.query(User).order_by(User.date_added).all()
 
     return render_template(
